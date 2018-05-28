@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>canvas钟表</title>
+		<meta name="Keywords" content="">
+		<meta name="author" content="@my_programmer">
+		<style type="text/css">
+			body {
+				margin: 0;
+			}
+		</style>
+	</head>
+
+	<body onload="run()">
+		<canvas id="canvas" width=400 height=400</canvas>
+		<script>
+			window.onload = draw;
+
+			function draw() {
+				var canvas = document.getElementById('canvas');
+				var context = canvas.getContext('2d');
+				context.save(); ///////////////////////////////////保存
+				context.translate(200, 200);
+				var deg = 2 * Math.PI / 12;
+				//////////////////////////////////////////////////表盘  
+				context.save();
+				context.beginPath();
+				context.moveTo(-160, -90);
+				context.quadraticCurveTo(-160, -160, -100, -160);
+				context.lineTo(90, -160);
+				context.quadraticCurveTo(160, -160, 160, -100);
+				context.lineTo(160, 90)
+				context.quadraticCurveTo(160, 160, 100, 160);
+				context.lineTo(-90, 160);
+				context.quadraticCurveTo(-160, 160, -160, 90);
+
+				context.fillStyle = 'black';
+				context.fill();
+				context.closePath();
+				context.restore();
+				//////////////////////////////////////////////////数字
+				context.save();
+				context.beginPath();
+				for(var i = 1; i < 13; i++) {
+					var x1 = Math.sin(i * deg);
+					var y1 = -Math.cos(i * deg);
+					context.fillStyle = "#fff";
+					context.font = "bold 20px Calibri";
+					context.textAlign = 'center';
+					context.textBaseline = 'middle';
+					context.fillText(i, x1 * 120, y1 * 120);
+				}
+				context.closePath();
+				context.restore();
+				//////////////////////////////////////////////////大刻度
+				context.save();
+				context.beginPath();
+				/////////////////////////////////////////////////分钟时刻
+				for(var i = 0; i < 12; i++) {
+					var x2 = Math.sin(i * deg);
+					var y2 = -Math.cos(i * deg);
+					var s = i * 5;
+					context.fillStyle = "#fff";
+					context.font = "bold 15px Calibri";
+					context.textAlign = 'center';
+					context.textBaseline = 'middle';
+					context.fillText(s, x2 * 145, y2 * 145);
+					context.strokeStyle = '#fff';
+					context.lineWidth = 4;
+					context.stroke();
+				}
+				context.closePath();
+				context.restore();
+				//////////////////////////////////////////////////小刻度
+				context.save();
+				var deg1 = 2 * Math.PI / 60;
+				context.beginPath();
+				for(var i = 0; i < 60; i++) {
+					if(i % 5 == 0) {} else {
+						var x2 = Math.sin(i * deg1);
+						var y2 = -Math.cos(i * deg1);
+						context.moveTo(x2 * 146, y2 * 146);
+						context.lineTo(x2 * 140, y2 * 140);
+						context.strokeStyle = 'greenyellow';
+					}
+				}
+				context.lineWidth = 2;
+				context.stroke();
+				context.closePath();
+				context.restore();
+				///////////////////////////////////////////////////文字
+				context.save();
+				context.strokeStyle = "#fff";
+				context.font = ' 16px sans-serif';
+				context.textAlign = 'center';
+				context.textBaseline = 'right';
+				context.strokeText('May ', 60, 7);
+				context.restore();
+				context.save();
+				context.strokeStyle = "greenyellow";
+				context.font = ' 16px sans-serif';
+				context.textAlign = 'center';
+				context.textBaseline = 'right';
+				context.strokeText('28', 95, 7);
+				context.restore();
+				/////////////////////////////////////////////////new Date
+				var time = new Date();
+				var h = (time.getHours() % 12) * 2 * Math.PI / 12;
+				var m = time.getMinutes() * 2 * Math.PI / 60;
+				var s = time.getSeconds() * 2 * Math.PI / 60;
+				////////////////////////////////////////////////时针
+				context.save();
+				context.rotate(h + m / 12 + s / 720);
+				context.beginPath();
+				context.moveTo(0, 8);
+				context.lineTo(0, -75);
+				context.strokeStyle = "#fff";
+				context.lineWidth = 6;
+				context.stroke();
+				context.closePath();
+				context.restore();
+				//////////////////////////////////////////////分针
+				context.save();
+				context.rotate(m + s / 60);
+				context.beginPath();
+				context.moveTo(0, 8);
+				context.lineTo(0, -105);
+				context.strokeStyle = "#fff";
+				context.lineWidth = 4;
+				context.stroke();
+				context.closePath();
+				context.restore();
+				/////////////////////////////////////////////秒针
+				context.save();
+				context.rotate(s);
+				context.beginPath();
+				context.moveTo(0, 10);
+				context.lineTo(0, -120);
+				context.strokeStyle = "greenyellow";
+				context.lineWidth = 2;
+				context.stroke();
+				context.closePath();
+				context.restore();
+				context.restore(); /////////////////////////////栈出
+				setTimeout(draw, 1000); /////////////////////////////计时器
+			}
+		</script>
+	</body>
+
+</html>
