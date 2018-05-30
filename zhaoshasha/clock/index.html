@@ -17,7 +17,6 @@
 		<canvas id="canvas" width=400 height=400</canvas>
 		<script>
 			window.onload = draw;
-
 			function draw() {
 				var canvas = document.getElementById('canvas');
 				var context = canvas.getContext('2d');
@@ -90,26 +89,30 @@
 				context.stroke();
 				context.closePath();
 				context.restore();
-				///////////////////////////////////////////////////文字
-				context.save();
-				context.strokeStyle = "#fff";
-				context.font = ' 16px sans-serif';
-				context.textAlign = 'center';
-				context.textBaseline = 'right';
-				context.strokeText('May ', 60, 7);
-				context.restore();
-				context.save();
-				context.strokeStyle = "greenyellow";
-				context.font = ' 16px sans-serif';
-				context.textAlign = 'center';
-				context.textBaseline = 'right';
-				context.strokeText('28', 95, 7);
-				context.restore();
-				/////////////////////////////////////////////////new Date
+			    /////////////////////////////////////////////////new Date
+				var weekday=new Array('Sun','Mon','Tues','Wed','Thur','Fri','Sat');
 				var time = new Date();
 				var h = (time.getHours() % 12) * 2 * Math.PI / 12;
 				var m = time.getMinutes() * 2 * Math.PI / 60;
 				var s = time.getSeconds() * 2 * Math.PI / 60;
+				var ms = time.getMilliseconds();
+				var day = time.getDay();
+				var month=time.getMonth()+1; 
+				var year=time.getFullYear();
+				context.save();
+				context.strokeStyle = "#fff";
+				context.font = ' 17px sans-serif';
+				context.textAlign = 'center';
+				context.textBaseline = 'right';
+				context.strokeText(weekday[day], 65, 7);
+				context.restore();
+				context.save();
+				context.strokeStyle = "greenyellow";
+				context.font = ' 18px sans-serif';
+				context.textAlign = 'center';
+				context.textBaseline = 'right';
+				context.strokeText(day, 95, 7);
+				context.restore();
 				////////////////////////////////////////////////时针
 				context.save();
 				context.rotate(h + m / 12 + s / 720);
@@ -118,6 +121,7 @@
 				context.lineTo(0, -75);
 				context.strokeStyle = "#fff";
 				context.lineWidth = 6;
+				context.lineCap = 'round';
 				context.stroke();
 				context.closePath();
 				context.restore();
@@ -129,6 +133,7 @@
 				context.lineTo(0, -105);
 				context.strokeStyle = "#fff";
 				context.lineWidth = 4;
+				context.lineCap = 'round';
 				context.stroke();
 				context.closePath();
 				context.restore();
@@ -140,10 +145,12 @@
 				context.lineTo(0, -120);
 				context.strokeStyle = "greenyellow";
 				context.lineWidth = 2;
+				context.lineCap = 'round';
 				context.stroke();
 				context.closePath();
 				context.restore();
-				context.restore(); /////////////////////////////栈出
+				context.restore();
+				 /////////////////////////////栈出
 				setTimeout(draw, 1000); /////////////////////////////计时器
 			}
 		</script>
